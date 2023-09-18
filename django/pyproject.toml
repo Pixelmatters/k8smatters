@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "backend"
+version = "0.1.0"
+description = ""
+authors = ["Hugo Rodrigues <hugorodrigues@wearepixelmatters.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+django = "^4.2.5"
+djangorestframework = "^3.14.0"
+psycopg2-binary = "^2.9.7"
+django-cors-headers = "^4.2.0"
+gunicorn = "^21.2.0"
+python-dotenv = "^1.0.0"
+
+[tool.dotenv]
+use-default = false
+path = ".env"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

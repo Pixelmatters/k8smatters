@@ -1,0 +1,53 @@
+version: "3.7"
+
+services:
+  django:
+    build:
+      context: ./django
+      dockerfile: Dockerfile
+    volumes:
+      - django_static_volume:/app/static
+    expose:
+      - 8000
+    env_file:
+      - ./django/.env
+    command: poetry run gunicorn backend.wsgi:application --bind 0.0.0.0:8000
+    depends_on:
+      - db
+  db:
+    image: postgres:14.6-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - ./postgres/.env
+  react:
+    build:
+      context: ./react
+      dockerfile: Dockerfile
+      args:
+        - API_SERVER=${DJANGO_API_SERVER}
+    volumes:
+      - react_assets_volume:/app/build/assets
+    expose:
+      - 3000
+    env_file:
+      - .env
+    command: serve -s build -l 3000
+    depends_on:
+      - django
+
+  nginx:
+    restart: always
+    build: ./nginx
+    volumes:
+      - django_static_volume:/usr/src/app/django_files/static
+      - react_assets_volume:/usr/src/app/react_files/assets
+    ports:
+      - 80:80
+    depends_on:
+      - react
+
+volumes:
+  postgres_data:
+  django_static_volume:
+  react_assets_volume:
