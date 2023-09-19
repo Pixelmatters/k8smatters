@@ -15,7 +15,9 @@ RUN poetry self add poetry-dotenv-plugin
 
 COPY ./entrypoint.sh .
 COPY ./backend .
-COPY ./.env .
+# env vars will be handled by our k8s
+# COPY ./.env .
 
 RUN chmod +x /app/entrypoint.sh
-ENTRYPOINT ["/app/entrypoint.sh"]
+# We'll offload the running of this task to a k8s job
+# ENTRYPOINT ["/app/entrypoint.sh"]

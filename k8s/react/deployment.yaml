@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: react-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      component: react
+  template:
+    metadata:
+      labels:
+        component: react
+    spec:
+      containers:
+        - name: react-container
+          image: hugofrod/react_frontend:latest
+          ports:
+            - containerPort: 3000
+          command: ["sh", "-c", "serve -s build -l 3000"]      

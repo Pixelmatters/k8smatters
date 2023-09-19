@@ -1,0 +1,64 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: django-job
+spec:
+  template:
+    spec:
+      containers:
+      - name: django-job-container
+        image: hugofrod/django_backend:latest
+        command: ["bash", "-c", "/app/entrypoint.sh"]
+        env:
+          - name: DJANGO_ENV
+            valueFrom:
+              configMapKeyRef:
+                name: config-map
+                key: DJANGO_ENV
+          - name: SECRET_KEY
+            valueFrom:
+              secretKeyRef:
+                name: secrets
+                key: DJANGO_SECRET_KEY
+          - name: DEBUG
+            valueFrom:
+              configMapKeyRef:
+                name: config-map
+                key: DEBUG
+          - name: DJANGO_ALLOWED_HOSTS
+            valueFrom:
+              configMapKeyRef:
+                name: config-map
+                key: DJANGO_ALLOWED_HOSTS
+          - name: DB_ENGINE
+            valueFrom:
+              configMapKeyRef:
+                name: config-map
+                key: DB_ENGINE
+          - name: DB_DATABASE
+            valueFrom:
+              configMapKeyRef:
+                name: config-map
+                key: DB_DATABASE
+          - name: DB_USER
+            valueFrom:
+              secretKeyRef:
+                name: secrets
+                key: DB_USER
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: secrets
+                key: DB_PASSWORD
+          - name: DB_HOST
+            valueFrom:
+              configMapKeyRef:
+                name: config-map
+                key: DB_HOST 
+          - name: DB_PORT
+            valueFrom:
+              configMapKeyRef:
+                name: config-map
+                key: DB_PORT
+      restartPolicy: Never
+  backoffLimit: 4

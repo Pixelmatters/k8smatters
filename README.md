@@ -28,10 +28,18 @@ The "k8s" branch contains the code for the "k8s" Kubernetes 101 Codematters talk
 
 - Clone the repository
 - Checkout the k8s branch
+- Build the Docker image for Django with `docker build -t <your_docker_hub_user>/django_backend:latest ./django`
+- Push the tagged image with `docker push <your_docker_hub_user>/django-backend:latest`
+- Build the Docker image for React with `docker build -t <your_docker_hub_user>/react_frontend:latest ./react`
+- Push the tagged image with `docker push <your_docker_hub_user>/react_frontend:latest`
 - Run `minikube start`
-- Run `kubectl apply -f .`
+- Run `minikube addons enable ingress`
+- Run `minikube addons enable ingress-dns`
+- Run `kubectl apply -f k8s/`
 - Run `kubectl get pods`
 - Run `kubectl get services`
+- Run `kubectl get ingress`
+- Run `minikube tunnel`
 - Run `minikube dashboard`
 
 ## Cleanup
@@ -42,6 +50,6 @@ The "k8s" branch contains the code for the "k8s" Kubernetes 101 Codematters talk
 
 ### Part 2
 
-- Run `kubectl delete -f .`
+- Run `kubectl delete -f k8s/`
 - Run `minikube stop`
 - Run `minikube delete`
